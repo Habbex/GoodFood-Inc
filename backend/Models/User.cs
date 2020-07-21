@@ -1,9 +1,9 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using backend.DataAccess.Models;
+using backend.Models;
 
-namespace backend.DataAccess.Models{
+namespace backend.Models{
     public class User
     {
         [Key]

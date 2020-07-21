@@ -1,10 +1,12 @@
 using System.Collections.Generic;
-using backend.DataAccess.Models;
+using backend.Interfaces;
+using backend.Models;
 
-namespace backend.DataAccess.Repositories
+namespace backend.Repositories
 {
-    public class IngredientsRepoMock : IIngredientsRepo
+    public class IngredientsRepoMock : IIngredientRepo
     {
+
         public void CreateIngredient(Ingredient ingredient)
         {
             throw new System.NotImplementedException();

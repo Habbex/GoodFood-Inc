@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.DataAccess.Models
+namespace backend.Models
 {
     public class Ingredient
     {
@@ -19,8 +19,8 @@ namespace backend.DataAccess.Models
         [Required]
         [MaxLength(50)]
         public string Slug {get; set;}
-
-        public ICollection<RecipeIngredients> RecipeIngredients {get; set;}
+        
+        public ICollection<RecipeIngredients> RecipeIngredients {get;set; }
 
     }
 }

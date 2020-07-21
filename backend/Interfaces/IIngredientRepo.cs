@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using backend.DataAccess.Models;
+using backend.Models;
 
-namespace backend.DataAccess.Repositories
+namespace backend.Interfaces
 {
-    public interface IIngredientsRepo : IBaseRepo
+    public interface IIngredientRepo
     {
         Ingredient GetIngredientById(int id);
         IEnumerable<Ingredient> GettAllIngredients();

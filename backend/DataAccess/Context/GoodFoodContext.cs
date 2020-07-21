@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using backend.DataAccess.Models;
+using backend.Models;
 
 namespace backend.DataAccess.Context
 {
