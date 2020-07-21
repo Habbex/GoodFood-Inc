@@ -20,7 +20,7 @@ namespace backend.Models
         [MaxLength(50)]
         public string Slug {get; set;}
         
-        public ICollection<RecipeIngredients> RecipeIngredients {get;set; }
+        public List<RecipeIngredients> Recipes {get;set; }
 
     }
 }

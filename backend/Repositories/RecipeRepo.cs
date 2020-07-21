@@ -3,6 +3,7 @@ using System.Linq;
 using backend.DataAccess.Context;
 using backend.Interfaces;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories
 {
@@ -15,7 +16,7 @@ namespace backend.Repositories
             _context= context;
         }
         public void CreateRecipe(Recipe recipe)
-        {
+        {          
            _context.Add(recipe);
         }
 
@@ -26,7 +27,7 @@ namespace backend.Repositories
 
         public IEnumerable<Recipe> GetAllRecipes()
         {
-           return _context.Recipes.ToList();
+           return _context.Recipes.Include(i => i.Ingredients).ToList();
         }
 
         public Recipe GetRecipeById(int id)

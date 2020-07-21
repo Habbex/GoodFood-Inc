@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using backend.Models;
 
 // nvarchar(4000) is used instead of nvarchar(MAX) for description.
 // Reason for this is that it will allocate too much in memory and will become a performance issue when the solution grows. 
@@ -28,6 +26,6 @@ namespace backend.Models
         [MaxLength(4000)]
         public string Description { get; set; }
         
-         public ICollection<RecipeIngredients> RecipeIngredients {get;set; }
+         public List<RecipeIngredients> Ingredients {get;set; }
     }
 }

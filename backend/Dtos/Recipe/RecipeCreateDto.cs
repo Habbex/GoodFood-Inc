@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using backend.Models;
 
 namespace backend.Dtos.Recipe
 {
@@ -18,5 +20,7 @@ namespace backend.Dtos.Recipe
 
         [MaxLength(4000)]
         public string Description { get; set; }
+
+         public List<RecipeIngredients> Ingredients {get;set; }
     }
 }

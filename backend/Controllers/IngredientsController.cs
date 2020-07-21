@@ -21,38 +21,38 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public ActionResult <IEnumerable<IngredientReadDto>> GetAllRecipes()
+        public ActionResult <IEnumerable<IngredientReadDto>> GettAllIngredients()
         {
-            var recipeItems= _baseRepo.recipe.GetAllRecipes();
+            var IngredientItems= _baseRepo.ingredient.GettAllIngredients();
 
 
-            return Ok(_mapper.Map<IEnumerable<IngredientReadDto>>(recipeItems));
+            return Ok(_mapper.Map<IEnumerable<IngredientReadDto>>(IngredientItems));
         }
 
-        [HttpGet("{id:int}", Name="GetRecipeById")]
-        public ActionResult <IngredientReadDto> GetRecipeById(int id)
+        [HttpGet("{id:int}", Name="GetIngredientById")]
+        public ActionResult <IngredientReadDto> GetIngredientById(int id)
         {
-            var recipeItem= _baseRepo.recipe.GetRecipeById(id);
+            var IngredientItem= _baseRepo.ingredient.GetIngredientById(id);
 
-            if(recipeItem !=null)
+            if(IngredientItem !=null)
             {
-                return Ok(_mapper.Map<IngredientReadDto>(recipeItem));
+                return Ok(_mapper.Map<IngredientReadDto>(IngredientItem));
             }
 
             return NotFound();
         }
 
         [HttpPost]
-        public ActionResult<IngredientReadDto> CreateRecipe(Recipe recipeCreateDto)
+        public ActionResult<IngredientReadDto> CreateIngredient(Ingredient ingredientCreateDto)
         {
-          var recipeModel= _mapper.Map<Recipe>(recipeCreateDto);
-          _baseRepo.recipe.CreateRecipe(recipeModel);
+          var ingredientModel= _mapper.Map<Ingredient>(ingredientCreateDto);
+          _baseRepo.ingredient.CreateIngredient(ingredientModel);
 
           _baseRepo.SaveChanges();
 
-          var recipeReadDto= _mapper.Map<IngredientReadDto>(recipeModel);
+          var ingredientReadDto= _mapper.Map<IngredientReadDto>(ingredientModel);
 
-          return CreatedAtRoute(nameof(GetRecipeById), new {Id = recipeReadDto.RecipeId},recipeReadDto);
+          return CreatedAtRoute(nameof(GetIngredientById), new {Id = ingredientReadDto.IngredientId},ingredientReadDto);
         } 
     }
 }

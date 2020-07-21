@@ -12,7 +12,7 @@ namespace backend.Controllers
     public class RecipesController : ControllerBase
     {
 
-        // private RecipesRepoMock  _repository = new RecipesRepoMock();
+         private RecipesRepoMock  _repository = new RecipesRepoMock();
         private readonly IBaseRepo _baseRepo;
         private readonly IMapper _mapper;
 
@@ -21,6 +21,16 @@ namespace backend.Controllers
             _baseRepo= baseRepo;
             _mapper = mapper;
         }
+
+
+        // [HttpGet]
+        // public ActionResult <IEnumerable<Recipe>> GetAllRecipes()
+        // {
+        //     var recipeItems= _repository.GetAllRecipes();
+
+
+        //     return Ok(recipeItems);
+        // }
 
         [HttpGet]
         public ActionResult <IEnumerable<RecipeReadDto>> GetAllRecipes()
@@ -45,9 +55,24 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<RecipeReadDto> CreateRecipe(Recipe recipeCreateDto)
+        public ActionResult<RecipeReadDto> CreateRecipe(RecipeCreateDto recipeCreateDto)
         {
           var recipeModel= _mapper.Map<Recipe>(recipeCreateDto);
+        //    Recipe recipe= new Recipe
+        //    {
+        //        Title= recipeCreateDto.Title,
+        //        Slug= recipeCreateDto.Slug,
+        //        Category= recipeCreateDto.Category,
+        //        Description= recipeCreateDto.Description
+        //    };
+
+        //     foreach (var ingredient in recipeCreateDto.RecipeIngredients)
+        //     {
+        //         recipe.RecipeIngredients.Add( new RecipeIngredients(){
+        //             Ingredient= ingredient.Ingredient
+        //         });
+        //     }
+
           _baseRepo.recipe.CreateRecipe(recipeModel);
 
           _baseRepo.SaveChanges();
