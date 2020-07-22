@@ -14,11 +14,9 @@ namespace backend.Dtos.Ingredient
         [MaxLength(4000)]
         public string Description { get; set; }
 
-        [Required]
+
         [MaxLength(50)]
-        public string Slug {get; set;}
-        
-        public List<RecipeIngredients> Recipes {get;set; }
+        public string Slug {get; set;}       
         
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,7 +10,7 @@ namespace backend.Models
     public class Recipe
     {
         [Key]
-        public int RecipeId { get; set; }
+        public Guid RecipeId { get; set; }
 
         [Required]
         [MaxLength(90)]
@@ -26,6 +27,6 @@ namespace backend.Models
         [MaxLength(4000)]
         public string Description { get; set; }
         
-         public List<RecipeIngredients> Ingredients {get;set; }
+         public virtual List<RecipeIngredients> RecipeIngredients {get;set; }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace backend.Migrations
 {
-    public partial class UpdatedError : Migration
+    public partial class InitDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,8 +11,7 @@ namespace backend.Migrations
                 name: "Ingredients",
                 columns: table => new
                 {
-                    IngredientId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 90, nullable: false),
                     Description = table.Column<string>(maxLength: 4000, nullable: true),
                     Slug = table.Column<string>(maxLength: 50, nullable: false)
@@ -41,8 +41,7 @@ namespace backend.Migrations
                 name: "Recipes",
                 columns: table => new
                 {
-                    RecipeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 90, nullable: false),
                     Slug = table.Column<string>(maxLength: 50, nullable: false),
                     Category = table.Column<string>(maxLength: 50, nullable: false),
@@ -64,8 +63,8 @@ namespace backend.Migrations
                 name: "RecipeIngredients",
                 columns: table => new
                 {
-                    RecipeId = table.Column<int>(nullable: false),
-                    IngredientId = table.Column<int>(nullable: false),
+                    RecipeId = table.Column<Guid>(nullable: false),
+                    IngredientId = table.Column<Guid>(nullable: false),
                     Amount = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -86,21 +85,9 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_Slug",
-                table: "Ingredients",
-                column: "Slug",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RecipeIngredients_IngredientId",
                 table: "RecipeIngredients",
                 column: "IngredientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recipes_Slug",
-                table: "Recipes",
-                column: "Slug",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipes_UserId",

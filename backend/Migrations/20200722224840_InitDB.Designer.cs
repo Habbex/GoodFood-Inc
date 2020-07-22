@@ -10,8 +10,8 @@ using backend.DataAccess.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(GoodFoodContext))]
-    [Migration("20200720205401_UpdatedError")]
-    partial class UpdatedError
+    [Migration("20200722224840_InitDB")]
+    partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,12 +21,11 @@ namespace backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("backend.DataAccess.Models.Ingredient", b =>
+            modelBuilder.Entity("backend.Models.Ingredient", b =>
                 {
-                    b.Property<int>("IngredientId")
+                    b.Property<Guid>("IngredientId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(4000)")
@@ -44,18 +43,14 @@ namespace backend.Migrations
 
                     b.HasKey("IngredientId");
 
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("backend.DataAccess.Models.Recipe", b =>
+            modelBuilder.Entity("backend.Models.Recipe", b =>
                 {
-                    b.Property<int>("RecipeId")
+                    b.Property<Guid>("RecipeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -81,21 +76,18 @@ namespace backend.Migrations
 
                     b.HasKey("RecipeId");
 
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("backend.DataAccess.Models.RecipeIngredients", b =>
+            modelBuilder.Entity("backend.Models.RecipeIngredients", b =>
                 {
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Amount")
                         .HasColumnType("nvarchar(20)")
@@ -108,7 +100,7 @@ namespace backend.Migrations
                     b.ToTable("RecipeIngredients");
                 });
 
-            modelBuilder.Entity("backend.DataAccess.Models.User", b =>
+            modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -139,22 +131,22 @@ namespace backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("backend.DataAccess.Models.Recipe", b =>
+            modelBuilder.Entity("backend.Models.Recipe", b =>
                 {
-                    b.HasOne("backend.DataAccess.Models.User", null)
+                    b.HasOne("backend.Models.User", null)
                         .WithMany("Recipes")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("backend.DataAccess.Models.RecipeIngredients", b =>
+            modelBuilder.Entity("backend.Models.RecipeIngredients", b =>
                 {
-                    b.HasOne("backend.DataAccess.Models.Ingredient", "Ingredient")
+                    b.HasOne("backend.Models.Ingredient", "Ingredient")
                         .WithMany("RecipeIngredients")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.DataAccess.Models.Recipe", "Recipe")
+                    b.HasOne("backend.Models.Recipe", "Recipe")
                         .WithMany("RecipeIngredients")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)

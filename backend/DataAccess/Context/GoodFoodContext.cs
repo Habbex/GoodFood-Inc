@@ -17,13 +17,13 @@ namespace backend.DataAccess.Context
              //Composite key with FluentAPI for RecipeIngredients
             builder.Entity<RecipeIngredients>().HasKey(rI=> new { rI.RecipeId, rI.IngredientId});
 
-            builder.Entity<RecipeIngredients>().HasOne(rI => rI.Recipe).WithMany(rI => rI.Ingredients).HasForeignKey(rI => rI.RecipeId);
+            builder.Entity<RecipeIngredients>().HasOne(rI => rI.Recipe).WithMany(rI => rI.RecipeIngredients).HasForeignKey(rI => rI.RecipeId);
 
-            builder.Entity<RecipeIngredients>().HasOne(rI => rI.Ingredient).WithMany(rI => rI.Recipes).HasForeignKey(rI => rI.IngredientId);
+            builder.Entity<RecipeIngredients>().HasOne(rI => rI.Ingredient).WithMany(rI => rI.RecipeIngredients).HasForeignKey(rI => rI.IngredientId);
 
-            //Slug values must be unique, and is done for the index with FluentAPI
-            builder.Entity<Recipe>().HasIndex(r => r.Slug).IsUnique();
-            builder.Entity<Ingredient>().HasIndex(i => i.Slug).IsUnique();
+            // //Slug values must be unique, and is done for the index with FluentAPI
+            // builder.Entity<Recipe>().HasIndex(r => r.Slug).IsUnique();
+            // builder.Entity<Ingredient>().HasIndex(i => i.Slug).IsUnique();
 
         }
         public DbSet<User> Users{ get; set;}

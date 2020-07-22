@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using backend.DataAccess.Context;
@@ -13,11 +14,46 @@ namespace backend.Repositories
 
         public RecipeRepo(GoodFoodContext context)
         {
-            _context= context;
+            _context = context;
         }
         public void CreateRecipe(Recipe recipe)
-        {          
-           _context.Add(recipe);
+        {
+            var dbRecipe = recipe.ToDbRecipe();
+            if (recipe.RecipeIngredients != null && recipe.RecipeIngredients.Any())
+            {
+                foreach (var recipeIngredient in recipe.RecipeIngredients)
+                {
+                    if (recipeIngredient.Ingredient != null)
+                    {                
+                        var existingIngredient = _context.Ingredients.SingleOrDefault(x => x.Title == recipeIngredient.Ingredient.Title);
+
+                        if (existingIngredient != null)
+                        {
+                            existingIngredient.ToDbIngredient();
+                            var dbRecipeIngredient = new RecipeIngredients()
+                            {
+                                Recipe = dbRecipe,
+                                IngredientId = existingIngredient.IngredientId,
+                                Amount= recipeIngredient.Amount
+                            };
+                            dbRecipe.RecipeIngredients.Add(dbRecipeIngredient);
+                        }
+
+                        else
+                        {
+                            var dbIngredient = recipeIngredient.Ingredient.ToDbIngredient();
+                            var dbRecipeIngredient = new RecipeIngredients()
+                            {
+                                Recipe = dbRecipe,
+                                Ingredient = dbIngredient,
+                                Amount= recipeIngredient.Amount
+                            };
+                            dbRecipe.RecipeIngredients.Add(dbRecipeIngredient);
+                        }
+                    }
+                }
+            }
+            _context.Add(dbRecipe);
         }
 
         public void DeleteRecipe(Recipe recipe)
@@ -27,22 +63,38 @@ namespace backend.Repositories
 
         public IEnumerable<Recipe> GetAllRecipes()
         {
-           return _context.Recipes.Include(i => i.Ingredients).ToList();
+            var queryable = _context.Recipes.AsQueryable();
+            queryable.Include(x => x.RecipeIngredients).ThenInclude(x => x.Ingredient).ToList();
+            return queryable;
         }
 
-        public Recipe GetRecipeById(int id)
+        public Recipe GetRecipeById(Guid id)
         {
-            return _context.Recipes.FirstOrDefault(x=> x.RecipeId== id);
+            return _context.Recipes.FirstOrDefault(x => x.RecipeId == id);
         }
 
         public IEnumerable<Recipe> GetRecipesByCategory(string category)
         {
-            return _context.Recipes.Where(x=>x.Category== category).ToList();
+            return _context.Recipes.Where(x => x.Category == category).ToList();
         }
 
         public void UpdateRecipe(Recipe recipe)
         {
             _context.Recipes.Update(recipe);
         }
+
+        // private void AddNewIngredients(Recipe recipe)
+        // {
+        //     foreach (var ingredient in recipe.Ingredients)
+        //     {
+
+        //         var existingIngredient = _context.Ingredients.SingleOrDefault(x=> x.Title == ingredient.Ingredient.Title);
+        //         if (existingIngredient !=null)
+        //             continue;
+
+
+        //     }
+
+        // }
     }
 }

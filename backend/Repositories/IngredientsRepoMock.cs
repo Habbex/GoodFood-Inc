@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using backend.Interfaces;
 using backend.Models;
@@ -17,7 +18,7 @@ namespace backend.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Ingredient GetIngredientById(int id)
+        public Ingredient GetIngredientById(Guid id)
         {
             throw new System.NotImplementedException();
         }

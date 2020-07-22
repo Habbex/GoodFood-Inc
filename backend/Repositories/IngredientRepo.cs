@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using backend.DataAccess.Context;
 using backend.Interfaces;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories
 {
@@ -24,14 +26,14 @@ namespace backend.Repositories
            _context.Ingredients.Remove(ingredient);
         }
 
-        public Ingredient GetIngredientById(int id)
+        public Ingredient GetIngredientById(Guid id)
         {
             return _context.Ingredients.FirstOrDefault(x=>x.IngredientId== id);
         }
 
         public IEnumerable<Ingredient> GettAllIngredients()
         {
-            return _context.Ingredients.ToList();
+            return _context.Ingredients.AsNoTracking().ToList();
         }
 
         public void UpdateIngredient(Ingredient ingredient)

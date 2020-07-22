@@ -20,7 +20,7 @@ namespace backend.Models{
         [MaxLength(200)]
         public string WebsiteURL{get;set;}
 
-        public List<Recipe> Recipes {get; set;} = new List<Recipe>();
+        public virtual List<Recipe> Recipes {get; set;}
 
     }
 }

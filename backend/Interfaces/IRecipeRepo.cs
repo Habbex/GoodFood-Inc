@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using backend.Models;
 
@@ -5,7 +6,7 @@ namespace backend.Interfaces
 {
     public interface IRecipeRepo
     {
-        Recipe GetRecipeById(int id);
+        Recipe GetRecipeById(Guid id);
         IEnumerable<Recipe> GetAllRecipes();
         IEnumerable<Recipe> GetRecipesByCategory(string category);
 

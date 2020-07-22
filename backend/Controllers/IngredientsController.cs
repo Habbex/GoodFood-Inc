@@ -4,6 +4,7 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 namespace backend.Controllers
 {
@@ -29,8 +30,8 @@ namespace backend.Controllers
             return Ok(_mapper.Map<IEnumerable<IngredientReadDto>>(IngredientItems));
         }
 
-        [HttpGet("{id:int}", Name="GetIngredientById")]
-        public ActionResult <IngredientReadDto> GetIngredientById(int id)
+        [HttpGet("{id:Guid}", Name="GetIngredientById")]
+        public ActionResult <IngredientReadDto> GetIngredientById(Guid id)
         {
             var IngredientItem= _baseRepo.ingredient.GetIngredientById(id);
 

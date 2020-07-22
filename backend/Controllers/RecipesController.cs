@@ -4,15 +4,16 @@ using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class RecipesController : ControllerBase
     {
-
-         private RecipesRepoMock  _repository = new RecipesRepoMock();
         private readonly IBaseRepo _baseRepo;
         private readonly IMapper _mapper;
 
@@ -22,27 +23,16 @@ namespace backend.Controllers
             _mapper = mapper;
         }
 
-
-        // [HttpGet]
-        // public ActionResult <IEnumerable<Recipe>> GetAllRecipes()
-        // {
-        //     var recipeItems= _repository.GetAllRecipes();
-
-
-        //     return Ok(recipeItems);
-        // }
-
         [HttpGet]
         public ActionResult <IEnumerable<RecipeReadDto>> GetAllRecipes()
         {
             var recipeItems= _baseRepo.recipe.GetAllRecipes();
 
-
             return Ok(_mapper.Map<IEnumerable<RecipeReadDto>>(recipeItems));
         }
 
-        [HttpGet("{id:int}", Name="GetRecipeById")]
-        public ActionResult <RecipeReadDto> GetRecipeById(int id)
+        [HttpGet("{id:Guid}", Name="GetRecipeById")]
+        public ActionResult <RecipeReadDto> GetRecipeById(Guid id)
         {
             var recipeItem= _baseRepo.recipe.GetRecipeById(id);
 
@@ -57,29 +47,24 @@ namespace backend.Controllers
         [HttpPost]
         public ActionResult<RecipeReadDto> CreateRecipe(RecipeCreateDto recipeCreateDto)
         {
-          var recipeModel= _mapper.Map<Recipe>(recipeCreateDto);
-        //    Recipe recipe= new Recipe
-        //    {
-        //        Title= recipeCreateDto.Title,
-        //        Slug= recipeCreateDto.Slug,
-        //        Category= recipeCreateDto.Category,
-        //        Description= recipeCreateDto.Description
-        //    };
+            var newRecipeId= Guid.NewGuid();
+           Recipe recipe= new Recipe
+           {
+               RecipeId= newRecipeId,
+               Title= recipeCreateDto.Title,
+               Slug= recipeCreateDto.Slug,
+               Category= recipeCreateDto.Category,
+               Description= recipeCreateDto.Description,
+               RecipeIngredients = recipeCreateDto.Ingredients.Select(x=> new RecipeIngredients{RecipeId= newRecipeId, Ingredient = x.Ingredient, Amount= x.Amount}).ToList()
+           };   
 
-        //     foreach (var ingredient in recipeCreateDto.RecipeIngredients)
-        //     {
-        //         recipe.RecipeIngredients.Add( new RecipeIngredients(){
-        //             Ingredient= ingredient.Ingredient
-        //         });
-        //     }
-
-          _baseRepo.recipe.CreateRecipe(recipeModel);
+          _baseRepo.recipe.CreateRecipe(recipe);
 
           _baseRepo.SaveChanges();
 
-          var recipeReadDto= _mapper.Map<RecipeReadDto>(recipeModel);
+          var recipeReadDto=  _mapper.Map<RecipeReadDto>(recipe);
 
-          return CreatedAtRoute(nameof(GetRecipeById), new {Id = recipeReadDto.RecipeId},recipeReadDto);
+          return CreatedAtRoute(nameof(GetRecipeById), new {Id = recipeReadDto.RecipeId.ToString()},recipeReadDto);
         } 
     }
 }

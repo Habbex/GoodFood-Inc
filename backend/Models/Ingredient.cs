@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +8,7 @@ namespace backend.Models
     public class Ingredient
     {
         [Key]
-        public int IngredientId { get; set; }
+        public Guid IngredientId { get; set; }
 
         [Required]
         [MaxLength(90)]
@@ -20,7 +21,7 @@ namespace backend.Models
         [MaxLength(50)]
         public string Slug {get; set;}
         
-        public List<RecipeIngredients> Recipes {get;set; }
+        public virtual List<RecipeIngredients> RecipeIngredients {get;set; }
 
     }
 }
