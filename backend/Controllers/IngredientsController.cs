@@ -44,7 +44,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<IngredientReadDto> CreateIngredient(Ingredient ingredientCreateDto)
+        public ActionResult<IngredientReadDto> CreateIngredient(IngredientCreateDto ingredientCreateDto)
         {
           var ingredientModel= _mapper.Map<Ingredient>(ingredientCreateDto);
           _baseRepo.ingredient.CreateIngredient(ingredientModel);
@@ -54,6 +54,23 @@ namespace backend.Controllers
           var ingredientReadDto= _mapper.Map<IngredientReadDto>(ingredientModel);
 
           return CreatedAtRoute(nameof(GetIngredientById), new {Id = ingredientReadDto.IngredientId},ingredientReadDto);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateIngredient(Guid id, IngredientUpdateDto ingredientUpdateDto)
+        {
+            var IngredientItem= _baseRepo.ingredient.GetIngredientById(id);
+
+            if(IngredientItem ==null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(ingredientUpdateDto, IngredientItem);
+            _baseRepo.ingredient.UpdateIngredient(IngredientItem);
+            _baseRepo.SaveChanges();
+
+            return NoContent();
         } 
 
         [HttpDelete("{id}")]

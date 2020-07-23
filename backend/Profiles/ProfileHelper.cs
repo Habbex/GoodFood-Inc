@@ -12,7 +12,12 @@ namespace backend.Profiles
         {
             CreateMap<Recipe, RecipeReadDto>().ForMember(dest => dest.RecipeIngredients, opt => opt.MapFrom(src => src.RecipeIngredients));
             CreateMap<RecipeUpdateDto,Recipe>();
+
             CreateMap<Ingredient, IngredientReadDto>();
+            CreateMap<IngredientCreateDto, Ingredient>();
+            CreateMap<IngredientUpdateDto, Ingredient>();
+            CreateMap<Ingredient, IngredientUpdateDto>();
+
         }
     }
 }
