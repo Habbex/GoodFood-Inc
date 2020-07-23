@@ -21,7 +21,7 @@ namespace backend.Models
         [MaxLength(50)]
         public string Slug {get; set;}
         
-        public virtual List<RecipeIngredients> RecipeIngredients {get;set; }
+        public  ICollection<RecipeIngredients> RecipeIngredients {get;set; }
 
     }
 }

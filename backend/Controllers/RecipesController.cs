@@ -1,9 +1,11 @@
 using AutoMapper;
+using backend.DataAccess.Context;
 using backend.Dtos.Recipe;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,13 @@ namespace backend.Controllers
     {
         private readonly IBaseRepo _baseRepo;
         private readonly IMapper _mapper;
+         private readonly GoodFoodContext _context;
 
-        public RecipesController(IBaseRepo baseRepo, IMapper mapper)
+        public RecipesController(IBaseRepo baseRepo, IMapper mapper,GoodFoodContext context)
         {
             _baseRepo= baseRepo;
             _mapper = mapper;
+            _context= context;
         }
 
         [HttpGet]
@@ -55,7 +59,7 @@ namespace backend.Controllers
                Slug= recipeCreateDto.Slug,
                Category= recipeCreateDto.Category,
                Description= recipeCreateDto.Description,
-               RecipeIngredients = recipeCreateDto.Ingredients.Select(x=> new RecipeIngredients{RecipeId= newRecipeId, Ingredient = x.Ingredient, Amount= x.Amount}).ToList()
+               RecipeIngredients = recipeCreateDto.RecipeIngredients.Select(x=> new RecipeIngredients{RecipeId= newRecipeId, IngredientId= x.IngredientId, Ingredient = x.Ingredient, Amount= x.Amount}).ToList()
            };   
 
           _baseRepo.recipe.CreateRecipe(recipe);
@@ -66,5 +70,36 @@ namespace backend.Controllers
 
           return CreatedAtRoute(nameof(GetRecipeById), new {Id = recipeReadDto.RecipeId.ToString()},recipeReadDto);
         } 
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateRecipe(Guid id, RecipeUpdateDto recipeUpdateDto)
+        {
+            var recipeItem= _baseRepo.recipe.GetRecipeById(id);
+            if (recipeItem == null)
+            {
+                return NotFound();
+            } 
+
+            recipeUpdateDto.RecipeId= id;
+            recipeUpdateDto.Recipe= recipeItem; 
+            _baseRepo.recipe.UpdateRecipe(recipeItem, recipeUpdateDto);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteRecipe (Guid id)
+        {
+            var recipeItem= _baseRepo.recipe.GetRecipeById(id);
+            if (recipeItem == null)
+            {
+                return NotFound();
+            }
+
+            _baseRepo.recipe.DeleteRecipe(recipeItem);
+            _baseRepo.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

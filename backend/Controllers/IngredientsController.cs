@@ -55,5 +55,22 @@ namespace backend.Controllers
 
           return CreatedAtRoute(nameof(GetIngredientById), new {Id = ingredientReadDto.IngredientId},ingredientReadDto);
         } 
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteIngredient(Guid id)
+        {
+            var IngredientItem= _baseRepo.ingredient.GetIngredientById(id);
+
+            if(IngredientItem ==null)
+            {
+                return NotFound();
+            }
+
+            _baseRepo.ingredient.DeleteIngredient(IngredientItem);
+
+            _baseRepo.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

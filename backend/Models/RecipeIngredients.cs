@@ -11,5 +11,6 @@ namespace backend.Models
 
         [MaxLength(20)]
         public string Amount { get; set; }
+
     }
 }

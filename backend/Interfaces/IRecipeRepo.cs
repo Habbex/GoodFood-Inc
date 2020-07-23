@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using backend.Dtos.Recipe;
 using backend.Models;
 
 namespace backend.Interfaces
@@ -12,7 +13,7 @@ namespace backend.Interfaces
 
         void CreateRecipe(Recipe recipe);
 
-        void UpdateRecipe(Recipe recipe);
+        void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto);
 
         void DeleteRecipe(Recipe recipe);
     }
