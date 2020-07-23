@@ -17,6 +17,13 @@ namespace backend.Repositories
         {
             _context = context;
         }
+
+        public void BulkDeleteRecipe(IEnumerable<Guid> recipeIds)
+        {
+            var recipesToBeRemoved= _context.FindMatches<Recipe>(recipeIds).ToList();
+            _context.RemoveRange(recipesToBeRemoved);
+        }
+
         public void CreateRecipe(Recipe recipe)
         {
             var dbRecipe = AddIngredients(recipe);

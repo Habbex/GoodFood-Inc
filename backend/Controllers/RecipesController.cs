@@ -101,5 +101,14 @@ namespace backend.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        public ActionResult BulkDeleteRecipe (RecipeBulkDeleteDto recipeBulkDeleteDto)
+        {
+            _baseRepo.recipe.BulkDeleteRecipe(recipeBulkDeleteDto.RecipeIds);
+            _baseRepo.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend
 {
@@ -24,8 +27,11 @@ namespace backend
         Description= ingredient.Description,
         Slug= ingredient.Slug,
         RecipeIngredients = new List<RecipeIngredients>()
-      };
-
+      };    
     }
+
+    public static IQueryable<T> FindMatches<T>(this DbContext db, IEnumerable<Guid> keys)
+        where T : Recipe
+        => db.Set<T>().Where(x => keys.Contains(x.RecipeId));
   }
 }

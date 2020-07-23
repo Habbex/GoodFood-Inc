@@ -16,5 +16,7 @@ namespace backend.Interfaces
         void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto);
 
         void DeleteRecipe(Recipe recipe);
+
+        void BulkDeleteRecipe(IEnumerable<Guid> RecipeIds);
     }
 }
