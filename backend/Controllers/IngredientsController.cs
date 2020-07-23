@@ -1,5 +1,6 @@
 using AutoMapper;
 using backend.Dtos.Ingredient;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Models;
 using backend.Repositories;
@@ -21,6 +22,7 @@ namespace backend.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult <IEnumerable<IngredientReadDto>> GettAllIngredients()
         {
@@ -30,6 +32,7 @@ namespace backend.Controllers
             return Ok(_mapper.Map<IEnumerable<IngredientReadDto>>(IngredientItems));
         }
 
+        [Authorize]
         [HttpGet("{id:Guid}", Name="GetIngredientById")]
         public ActionResult <IngredientReadDto> GetIngredientById(Guid id)
         {
@@ -43,6 +46,7 @@ namespace backend.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult<IngredientReadDto> CreateIngredient(IngredientCreateDto ingredientCreateDto)
         {
@@ -56,6 +60,7 @@ namespace backend.Controllers
           return CreatedAtRoute(nameof(GetIngredientById), new {Id = ingredientReadDto.IngredientId},ingredientReadDto);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult UpdateIngredient(Guid id, IngredientUpdateDto ingredientUpdateDto)
         {
@@ -72,7 +77,8 @@ namespace backend.Controllers
 
             return NoContent();
         } 
-
+        
+        [Authorize]
         [HttpDelete("{id}")]
         public ActionResult DeleteIngredient(Guid id)
         {

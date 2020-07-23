@@ -5,6 +5,7 @@ using backend.DataAccess.Context;
 using backend.Dtos.Recipe;
 using backend.Interfaces;
 using backend.Models;
+using backend.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories
@@ -20,11 +21,11 @@ namespace backend.Repositories
 
         public void BulkDeleteRecipe(IEnumerable<Guid> recipeIds)
         {
-            var recipesToBeRemoved= _context.FindMatches<Recipe>(recipeIds).ToList();
+            var recipesToBeRemoved = _context.FindMatches<Recipe>(recipeIds).ToList();
             _context.RemoveRange(recipesToBeRemoved);
         }
 
-        public void CreateRecipe(Recipe recipe)
+        public void CreateRecipe(Recipe recipe, string UserLoginId)
         {
             var dbRecipe = AddIngredients(recipe);
             _context.Add(dbRecipe);
@@ -52,26 +53,27 @@ namespace backend.Repositories
             return _context.Recipes.Where(x => x.Category == category).ToList();
         }
 
-        public void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto)
+        public void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto, string UserLoginId)
         {
-              var model = recipe;
+            var model = recipe;
             _context.TryUpdateManyToMany(model.RecipeIngredients, recipeUpdateDto.RecipeIngredients
             .Select(x => new RecipeIngredients
             {
-                Amount= x.Amount,
+                Amount = x.Amount,
                 IngredientId = x.Ingredient.IngredientId,
                 RecipeId = recipeUpdateDto.Recipe.RecipeId,
             }), x => x.IngredientId);
 
             foreach (var item in recipeUpdateDto.RecipeIngredients)
             {
-                var recipeIngredient= _context.RecipeIngredients.FirstOrDefault(x=> x.IngredientId==item.Ingredient.IngredientId && x.RecipeId==recipe.RecipeId);
-                if (recipeIngredient !=null)
+                var recipeIngredient = _context.RecipeIngredients.FirstOrDefault(x => x.IngredientId == item.Ingredient.IngredientId && x.RecipeId == recipe.RecipeId);
+                if (recipeIngredient != null)
                 {
-                    recipeIngredient.Amount= item.Amount;
+                    recipeIngredient.Amount = item.Amount;
                 }
             }
-            
+             Models.User User = new User{UserId= Int32.Parse(UserLoginId),Recipes= new List<Recipe>{recipe}};
+            _context.Users.Add(User);
 
             _context.SaveChanges();
         }

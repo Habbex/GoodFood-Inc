@@ -11,9 +11,9 @@ namespace backend.Interfaces
         IEnumerable<Recipe> GetAllRecipes();
         IEnumerable<Recipe> GetRecipesByCategory(string category);
 
-        void CreateRecipe(Recipe recipe);
+        void CreateRecipe(Recipe recipe,string UserLoginId);
 
-        void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto);
+        void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto, string UserLoginId);
 
         void DeleteRecipe(Recipe recipe);
 

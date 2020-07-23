@@ -4,7 +4,7 @@ using System.Linq;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend
+namespace backend.Helpers
 {
     public static class ApiObjectExtensions {
 

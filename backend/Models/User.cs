@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using backend.Models;
 
 namespace backend.Models{
@@ -20,7 +21,7 @@ namespace backend.Models{
         [MaxLength(200)]
         public string WebsiteURL{get;set;}
 
-        public virtual List<Recipe> Recipes {get; set;}
+        public virtual List<Recipe> Recipes {get; set;} = new List<Recipe>();
 
     }
 }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using backend.DataAccess.Context;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Repositories;
+using backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,7 +44,12 @@ namespace backend
             services.AddControllers().AddNewtonsoftJson(setup=> setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddTransient<IBaseRepo, BaseRepo>();
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddScoped<IUserLoginService, UserLoginService>();
 
             services.AddCors();
         }
@@ -52,16 +59,17 @@ namespace backend
         {
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
 
+            app.UseRouting();
+
+            app.UseMiddleware<JwtMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseAuthentication();
+            
+            app.UseHttpsRedirection();          
 
             app.UseEndpoints(endpoints =>
             {
