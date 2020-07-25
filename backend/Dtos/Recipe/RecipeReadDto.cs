@@ -12,6 +12,6 @@ namespace backend.Dtos.Recipe
         public string Category { get; set; }
         public string Description { get; set; }
 
-         public IEnumerable<RecipeIngredients> RecipeIngredients {get;set; }
+         public IEnumerable<RecipeIngredientsReadDto> RecipeIngredients {get;set; }
     }
 }

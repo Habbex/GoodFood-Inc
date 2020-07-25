@@ -10,7 +10,8 @@ namespace backend.Profiles
     {
         public ProfileHelper()
         {
-            CreateMap<Recipe, RecipeReadDto>().ForMember(dest => dest.RecipeIngredients, opt => opt.MapFrom(src => src.RecipeIngredients));
+            CreateMap<Recipe, RecipeReadDto>().ForMember(dest => dest.RecipeIngredients, opt => opt.MapFrom(src => src.RecipeIngredients)).ReverseMap();
+            CreateMap<RecipeIngredients, RecipeIngredientsReadDto>().ReverseMap();
             CreateMap<RecipeUpdateDto,Recipe>();
 
             CreateMap<Ingredient, IngredientReadDto>();
