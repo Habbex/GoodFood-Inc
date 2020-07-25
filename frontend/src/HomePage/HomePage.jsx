@@ -32,13 +32,19 @@ class HomePage extends React.Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <Paper className={classes.paper} elevation={3}>
         <Grid container>
           <RecipeList/>
-            <p>
+          </Grid>
+          <Grid container>
+            <Grid item md={8}>
+            <Button  variant="contained"
+                color="primary">
               <Link to="/login">Logout</Link>
-            </p>
+            </Button>
+            </Grid>
           </Grid>
       </Paper>
     );

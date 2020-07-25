@@ -29,7 +29,7 @@ namespace backend.Controllers
             _context = context;
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<RecipeReadDto>> GetAllRecipes()
         {

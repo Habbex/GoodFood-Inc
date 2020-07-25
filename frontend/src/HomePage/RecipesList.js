@@ -48,10 +48,9 @@ const RecipesList = ({ classes, ...props }) => {
   };
 
   return (
-    <Paper className={classes.paper}  elevation={3}>
         <Grid container>
           <Grid item sx={6}>
-          <RecipeFrom {...{ currentId, setCurrentId }} />
+          <RecipeFrom {...({currentId, setCurrentId})} />
           </Grid>
           <Grid item xs={6}>
             <TableContainer>
@@ -64,7 +63,6 @@ const RecipesList = ({ classes, ...props }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {console.log(props.RecipeActionList)}
                 {props.RecipeActionList.map((recipe, index) => {
                   return (
                     <TableRow key={index} hover onClick={()=>{setCurrentId(recipe.recipeId)}}>
@@ -77,14 +75,14 @@ const RecipesList = ({ classes, ...props }) => {
                             <EditIcon
                               color="primary"
                               onClick={() => {
-                                setCurrentId(recipe.id);
+                                setCurrentId(recipe.recipeId);
                               }}
                             />
                           </Button>
                           <Button>
                             <DeleteIcon
                               color="secondary"
-                              onClick={() => onDelete(recipe.id)}
+                              onClick={() => onDelete(recipe.recipeId)}
                             />
                           </Button>
                         </ButtonGroup>
@@ -96,8 +94,7 @@ const RecipesList = ({ classes, ...props }) => {
               </Table>
             </TableContainer>
           </Grid>
-        </Grid>
-      </Paper>
+          </Grid>
   );
 };
 

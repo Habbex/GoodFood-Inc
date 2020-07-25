@@ -58,24 +58,24 @@ const styles = (theme) => ({
       resetForm,
     } = useRecipeForm(initialFieldValues, validate, props.setCurrentId);
   
-    // const handleSubmit = (e) => {
-    //   e.preventDefault();
+    const handleSubmit = (e) => {
+      e.preventDefault();
   
-    //   if (validate()) {
-    //     const onSuccessCreate = () => {
-    //       resetForm();
-    //       addToast("Created successfully", { appearance: "success" });
-    //     };
-    //     const onSuccessUpdate = () => {
-    //       resetForm();
-    //       addToast("Updated successfully", { appearance: "success" });
-    //     };
+      if (validate()) {
+        const onSuccessCreate = () => {
+          resetForm();
+          addToast("Created successfully", { appearance: "success" });
+        };
+        const onSuccessUpdate = () => {
+          resetForm();
+          addToast("Updated successfully", { appearance: "success" });
+        };
   
-    //     if (props.currentId == 0) props.createDCommands(values, onSuccessCreate);
+        // if (props.currentId == 0) props.createDCommands(values, onSuccessCreate);
   
-    //     else props.updateDCommands(props.currentId, values, onSuccessUpdate);
-    //   }
-    // };
+        // else props.updateDCommands(props.currentId, values, onSuccessUpdate);
+      }
+    };
   
     useEffect(() => {
       if (props.currentId != 0)
@@ -83,12 +83,13 @@ const styles = (theme) => ({
           ...props.RecipeActionList.find((x) => x.id == props.currentId),
         });
     }, [props.currentId]);
+
     return (
       <form
         autoComplete="off"
         noValidate
         className={classes.root}
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       >
         <Grid container>
           <Grid item xs={6}>
@@ -97,16 +98,16 @@ const styles = (theme) => ({
               variant="outlined"
               label="Title"
               value={values.title}
-              // onChange={handleInputChange}
-              // {...(errors.howTo && { error: true, helperText: errors.howTo })}
+              onChange={handleInputChange}
+              {...(errors.title && { error: true, helperText: errors.title })}
             />
             <TextField
               name="description"
               variant="outlined"
               label="Description"
               value={values.description}
-              // onChange={handleInputChange}
-              // {...(errors.line && { error: true, helperText: errors.line })}
+              onChange={handleInputChange}
+              {...(errors.description && { error: true, helperText: errors.description })}
             />
   
             <TextField
@@ -114,11 +115,11 @@ const styles = (theme) => ({
               variant="outlined"
               label="Category"
               value={values.category}
-              // onChange={handleInputChange}
-              // {...(errors.platform && {
-              //   error: true,
-              //   helperText: errors.platform,
-              // })}
+              onChange={handleInputChange}
+              {...(errors.category && {
+                error: true,
+                helperText: errors.category,
+              })}
             />
                <div>
               <Button
@@ -132,7 +133,7 @@ const styles = (theme) => ({
               <Button
                 variant="contained"
                 className={classes.smMargin}
-                // onClick={resetForm}
+                onClick={resetForm}
               >
                 Reset
               </Button>
