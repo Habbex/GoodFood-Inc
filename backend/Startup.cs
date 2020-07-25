@@ -38,10 +38,10 @@ namespace backend
             options.UseSqlServer(
                 Configuration.GetConnectionString("GoodFoodConnectionString")
             ));
-            
+
             services.AddControllers().AddNewtonsoftJson(setup =>
             setup.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
-            services.AddControllers().AddNewtonsoftJson(setup=> setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers().AddNewtonsoftJson(setup => setup.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -57,7 +57,10 @@ namespace backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(x => x
+           .AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader());
 
             app.UseRouting();
 
@@ -68,8 +71,8 @@ namespace backend
                 app.UseDeveloperExceptionPage();
             }
             app.UseAuthentication();
-            
-            app.UseHttpsRedirection();          
+
+            app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>
             {

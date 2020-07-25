@@ -1,3 +1,4 @@
+using backend.Helpers;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -5,7 +6,7 @@ using WebApi.Models;
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UsersController : ControllerBase
     {
         private IUserLoginService _userService;
@@ -24,6 +25,14 @@ namespace backend.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPost("createusers")]
+        public IActionResult CreateUsers()
+        {
+            var users = _userService.CreateUsers();
+            return Ok(users);
         }
     }
 }

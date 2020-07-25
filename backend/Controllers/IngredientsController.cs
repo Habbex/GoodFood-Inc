@@ -82,6 +82,12 @@ namespace backend.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteIngredient(Guid id)
         {
+            var userLoginRole = HttpContext.GetUserLoginRole();
+            if (userLoginRole != "Admin")
+            {
+                return Unauthorized();
+            }   
+            
             var IngredientItem= _baseRepo.ingredient.GetIngredientById(id);
 
             if(IngredientItem ==null)

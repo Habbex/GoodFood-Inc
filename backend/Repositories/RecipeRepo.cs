@@ -25,10 +25,13 @@ namespace backend.Repositories
             _context.RemoveRange(recipesToBeRemoved);
         }
 
-        public void CreateRecipe(Recipe recipe, string UserLoginId)
+        public void CreateRecipe(Recipe recipe, int UserLoginId)
         {
             var dbRecipe = AddIngredients(recipe);
             _context.Add(dbRecipe);
+
+            var userRow = _context.Users.FirstOrDefault(x => x.UserInformationId == UserLoginId);
+            userRow.Recipes.Add(dbRecipe);
         }
 
         public void DeleteRecipe(Recipe recipe)
@@ -53,7 +56,7 @@ namespace backend.Repositories
             return _context.Recipes.Where(x => x.Category == category).ToList();
         }
 
-        public void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto, string UserLoginId)
+        public void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto, int UserLoginId)
         {
             var model = recipe;
             _context.TryUpdateManyToMany(model.RecipeIngredients, recipeUpdateDto.RecipeIngredients
@@ -72,10 +75,9 @@ namespace backend.Repositories
                     recipeIngredient.Amount = item.Amount;
                 }
             }
-             Models.User User = new User{UserId= Int32.Parse(UserLoginId),Recipes= new List<Recipe>{recipe}};
-            _context.Users.Add(User);
-
-            _context.SaveChanges();
+            var userRow = _context.Users.FirstOrDefault(x => x.UserLogin.Id == UserLoginId);
+            userRow.Recipes.Add(recipe);
+     
         }
 
         private Recipe AddIngredients(Recipe recipe)
@@ -93,7 +95,7 @@ namespace backend.Repositories
                         {
                             var dbRecipeIngredient = new RecipeIngredients()
                             {
-                                RecipeId = dbRecipe.RecipeId,
+                               
                                 IngredientId = existingIngredient.ToDbIngredient().IngredientId,
                                 Amount = recipeIngredient.Amount
                             };

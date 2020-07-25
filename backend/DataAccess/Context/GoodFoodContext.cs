@@ -21,12 +21,12 @@ namespace backend.DataAccess.Context
 
             builder.Entity<RecipeIngredients>().HasOne(rI => rI.Ingredient).WithMany(rI => rI.RecipeIngredients).HasForeignKey(rI => rI.IngredientId);
 
-            // //Slug values must be unique, and is done for the index with FluentAPI
-            // builder.Entity<Recipe>().HasIndex(r => r.Slug).IsUnique();
-            // builder.Entity<Ingredient>().HasIndex(i => i.Slug).IsUnique();
+            builder.Entity<UserLogin>().HasOne(uL => uL.userInformation).WithOne(ui =>ui.UserLogin).HasForeignKey<UserInformation>( ui => ui.UserLoginForeignKey);
 
         }
-        public DbSet<User> Users{ get; set;}
+
+        public DbSet<UserLogin> UserLogins {get; set;}
+        public DbSet<UserInformation> Users{ get; set;}
 
         public DbSet<Recipe> Recipes {get; set;}
 

@@ -1,19 +1,23 @@
 
 using System.Linq;
+using backend.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace backend.Helpers
 {
     public static class HttpContextExtension
     {
-        public static string GetUserLoginId(this HttpContext httpContext)
-        {
-            if (httpContext.User == null)
-            {
-                return string.Empty;
-            }
+        public static int GetUserLoginId(this HttpContext context)
+        {  
+            var userLogin= (UserLogin)context.Items["UserLogin"];
+            return userLogin.Id;
+        }
 
-            return httpContext.User.Claims.Single(x => x.Type == "id").Value;
+         public static string GetUserLoginRole(this HttpContext context)
+        {  
+            var userLogin= (UserLogin)context.Items["UserLogin"];
+            return userLogin.Role;
         }
     }
 }

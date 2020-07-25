@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DataAccess.Context;
 
 namespace backend.Migrations
 {
     [DbContext(typeof(GoodFoodContext))]
-    partial class GoodFoodContextModelSnapshot : ModelSnapshot
+    [Migration("20200724113804_UserLoginDB")]
+    partial class UserLoginDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,12 +71,12 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(90)")
                         .HasMaxLength(90);
 
-                    b.Property<int?>("UserInformationId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RecipeId");
 
-                    b.HasIndex("UserInformationId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
                 });
@@ -98,9 +100,9 @@ namespace backend.Migrations
                     b.ToTable("RecipeIngredients");
                 });
 
-            modelBuilder.Entity("backend.Models.UserInformation", b =>
+            modelBuilder.Entity("backend.Models.User", b =>
                 {
-                    b.Property<int>("UserInformationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -120,17 +122,16 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("UserLoginForeignKey")
+                    b.Property<int?>("UserLoginId")
                         .HasColumnType("int");
 
                     b.Property<string>("WebsiteURL")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.HasKey("UserInformationId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserLoginForeignKey")
-                        .IsUnique();
+                    b.HasIndex("UserLoginId");
 
                     b.ToTable("Users");
                 });
@@ -158,9 +159,9 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Recipe", b =>
                 {
-                    b.HasOne("backend.Models.UserInformation", null)
+                    b.HasOne("backend.Models.User", null)
                         .WithMany("Recipes")
-                        .HasForeignKey("UserInformationId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("backend.Models.RecipeIngredients", b =>
@@ -178,13 +179,11 @@ namespace backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("backend.Models.UserInformation", b =>
+            modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.HasOne("backend.Models.UserLogin", "UserLogin")
-                        .WithOne("userInformation")
-                        .HasForeignKey("backend.Models.UserInformation", "UserLoginForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserLoginId");
                 });
 #pragma warning restore 612, 618
         }

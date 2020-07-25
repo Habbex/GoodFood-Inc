@@ -29,7 +29,7 @@ namespace backend.Controllers
             _context = context;
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<RecipeReadDto>> GetAllRecipes()
         {
@@ -90,7 +90,10 @@ namespace backend.Controllers
 
             recipeUpdateDto.RecipeId = id;
             recipeUpdateDto.Recipe = recipeItem;
+            
             _baseRepo.recipe.UpdateRecipe(recipeItem, recipeUpdateDto, userLoginId);
+
+              _baseRepo.SaveChanges();
 
             return NoContent();
         }

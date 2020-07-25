@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 using backend.Models;
 
 namespace backend.Models{
-    public class User
+    public class UserInformation
     {
-        [Key]
-        public int UserId {get; set;}
+        public int UserInformationId {get; set;}
+
         [Required]
         [MaxLength(50)]
         public string FirstName { get; set; }
@@ -22,6 +22,9 @@ namespace backend.Models{
         public string WebsiteURL{get;set;}
 
         public virtual List<Recipe> Recipes {get; set;} = new List<Recipe>();
+
+        public int UserLoginForeignKey {get; set;}
+        public UserLogin UserLogin {get; set;}
 
     }
 }

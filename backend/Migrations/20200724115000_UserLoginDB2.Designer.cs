@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DataAccess.Context;
 
 namespace backend.Migrations
 {
     [DbContext(typeof(GoodFoodContext))]
-    partial class GoodFoodContextModelSnapshot : ModelSnapshot
+    [Migration("20200724115000_UserLoginDB2")]
+    partial class UserLoginDB2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,7 +122,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("UserLoginForeignKey")
+                    b.Property<int?>("UserLoginId")
                         .HasColumnType("int");
 
                     b.Property<string>("WebsiteURL")
@@ -129,8 +131,7 @@ namespace backend.Migrations
 
                     b.HasKey("UserInformationId");
 
-                    b.HasIndex("UserLoginForeignKey")
-                        .IsUnique();
+                    b.HasIndex("UserLoginId");
 
                     b.ToTable("Users");
                 });
@@ -181,10 +182,8 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Models.UserInformation", b =>
                 {
                     b.HasOne("backend.Models.UserLogin", "UserLogin")
-                        .WithOne("userInformation")
-                        .HasForeignKey("backend.Models.UserInformation", "UserLoginForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserLoginId");
                 });
 #pragma warning restore 612, 618
         }
