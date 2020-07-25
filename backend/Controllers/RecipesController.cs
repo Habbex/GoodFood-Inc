@@ -89,7 +89,7 @@ namespace backend.Controllers
             }
 
             recipeUpdateDto.RecipeId = id;
-            recipeUpdateDto.Recipe = recipeItem;
+            recipeUpdateDto.Recipe = _mapper.Map<RecipeReadDto>(recipeItem);
             
             _baseRepo.recipe.UpdateRecipe(recipeItem, recipeUpdateDto, userLoginId);
 

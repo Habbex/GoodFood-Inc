@@ -23,8 +23,8 @@ namespace backend.Dtos.Recipe
         [MaxLength(4000)]
         public string Description { get; set; }
 
-        public Models.Recipe Recipe {get; set;}
+        public RecipeReadDto Recipe {get; set;}
 
-         public IEnumerable<RecipeIngredients> RecipeIngredients {get;set; }
+         public IEnumerable<RecipeIngredientsReadDto> RecipeIngredients {get;set; }
     }
 }
