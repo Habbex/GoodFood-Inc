@@ -27,7 +27,7 @@ namespace backend.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+     
         [HttpPost("createusers")]
         public IActionResult CreateUsers()
         {
