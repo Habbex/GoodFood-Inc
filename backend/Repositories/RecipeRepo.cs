@@ -59,6 +59,7 @@ namespace backend.Repositories
         public void UpdateRecipe(Recipe recipe, RecipeUpdateDto recipeUpdateDto, int UserLoginId)
         {
             var model = recipe;
+
             _context.TryUpdateManyToMany(model.RecipeIngredients, recipeUpdateDto.RecipeIngredients
             .Select(x => new RecipeIngredients
             {
@@ -69,13 +70,22 @@ namespace backend.Repositories
 
             foreach (var item in recipeUpdateDto.RecipeIngredients)
             {
+                // Update the Amount of the ingredient in the bridge table RecipeIngredients
                 var recipeIngredient = _context.RecipeIngredients.FirstOrDefault(x => x.IngredientId == item.Ingredient.IngredientId && x.RecipeId == recipe.RecipeId);
                 if (recipeIngredient != null)
                 {
                     recipeIngredient.Amount = item.Amount;
                 }
-            }
-            var userRow = _context.Users.FirstOrDefault(x => x.UserLogin.Id == UserLoginId);
+            }   
+
+            recipe.Title= recipeUpdateDto.Title;
+            recipe.Slug= recipeUpdateDto.Slug;
+            recipe.Description= recipeUpdateDto.Description;
+            recipe.Category= recipeUpdateDto.Category;
+
+            // Attach the recipe to the user.
+            var userRow = _context.Users.FirstOrDefault(x => x.UserInformationId == UserLoginId);
+
             userRow.Recipes.Add(recipe);
      
         }
@@ -89,16 +99,18 @@ namespace backend.Repositories
                 {
                     if (recipeIngredient.Ingredient != null)
                     {
+                        // If the ingredients are also new, create them too and attach them to the recipe.
+                        // This for greater usability on the front end.
                         var existingIngredient = _context.Ingredients.SingleOrDefault(x => x.Title == recipeIngredient.Ingredient.Title);
 
                         if (existingIngredient != null)
                         {
                             var dbRecipeIngredient = new RecipeIngredients()
-                            {
-                               
+                            {                   
                                 IngredientId = existingIngredient.ToDbIngredient().IngredientId,
                                 Amount = recipeIngredient.Amount
                             };
+
                             dbRecipe.RecipeIngredients.Add(dbRecipeIngredient);
                         }
 
@@ -111,6 +123,7 @@ namespace backend.Repositories
                                 Ingredient = dbIngredient,
                                 Amount = recipeIngredient.Amount
                             };
+
                             dbRecipe.RecipeIngredients.Add(dbRecipeIngredient);
                         }
                     }
